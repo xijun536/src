@@ -1,0 +1,8 @@
+/**: #参数给节点通用配符 (serial_bridge)
+  ros__parameters:
+    config:
+      device_name: "/dev/ttyUSB0"
+      baud_rate: 115200
+    topic:
+      cmd_vel: "cmd_vel" #话题订阅名称
+    interval: 4 #发送包间隔

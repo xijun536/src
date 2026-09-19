@@ -1,0 +1,4 @@
+---
+bool cache_available
+float64 result_age_s
+cv3_interfaces/VisionStatus status

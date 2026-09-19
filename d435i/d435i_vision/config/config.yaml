@@ -1,0 +1,166 @@
+# D435i 深度圆形上表面检测配置。
+
+camera:
+  source: realsense
+  index: 0
+  video: null
+  width: 640
+  height: 480
+  fps: 30
+
+imu:
+  # 用D435i加速度计给出重力轴，不对加速度做位移积分。
+  enabled: true
+  accel_fps: 63
+  # 越大越抗机械臂振动，但相机姿态变化后的响应会稍慢。
+  gravity_smoothing: 0.85
+
+target:
+  color: green
+
+colors:
+  red:
+    ranges:
+      - lower: [156, 60, 60]
+        upper: [180, 255, 255]
+      - lower: [0, 60, 60]
+        upper: [6, 255, 255]
+  green:
+    ranges:
+      - lower: [38, 80, 45]
+        upper: [90, 255, 255]
+  blue:
+    ranges:
+      - lower: [106, 100, 45]
+        upper: [124, 255, 255]
+  yellow:
+    ranges:
+      - lower: [14, 80, 80]
+        upper: [22, 255, 255]
+  black:
+    # 黑色没有固定色相，主要通过较低的明度V筛选。
+    ranges:
+      - lower: [0, 0, 0]
+        upper: [180, 255, 55]
+  light_blue:
+    ranges:
+      - lower: [95, 50, 80]
+        upper: [104, 255, 255]
+
+preprocess:
+  gaussian_size: 5
+  morphology_size: 3
+  open_iterations: 1
+  close_iterations: 1
+
+depth_surface:
+  # true：使用D435i深度分离上表面与侧面。
+  enabled: true
+  # true：没有深度时不进行圆形检测；调试普通视频时可改成false。
+  required: true
+  min_depth_m: 0.05
+  max_depth_m: 0.50
+  # 深度点距离拟合平面小于5毫米时认为属于该平面。
+  plane_distance_m: 0.002
+  ransac_iterations: 180
+  min_points: 120
+  max_sample_points: 4000
+  min_inlier_ratio: 0.25
+  # 只接受法向量接近重力轴的平面，侧面即使面积更大也会被拒绝。
+  use_gravity: true
+  # true：没有有效IMU方向时宁可不输出，也不退回“最大平面”。
+  gravity_required: true
+  max_normal_gravity_angle_deg: 5.0
+  # 不在深度筛选后膨胀，避免把边缘侧面重新接回上表面。
+  close_iterations: 0
+
+circle:
+  min_area: 150.0
+  min_contour_points: 20
+  min_radius_px: 10.0
+  max_radius_px: 300.0
+  # 1.0是标准圆；降低阈值可容许轻微斜视和深度边缘缺失。
+  min_circularity: 0.45
+  # 轮廓面积/最小外接圆面积，矩形和长条通常较低。
+  min_fill_ratio: 0.65
+
+tracker:
+  alpha: 0.75
+  beta: 0.15
+  max_missing: 5
+  association_distance: 160.0
+
+output:
+  print_hz: 10.0
+  display: true
+
+ros:
+  enabled: true
+  node_name: cv3_vision_controller
+  mode_topic: /vision_mode
+  # std_msgs/msg/String；发送colors下配置的名称，例如yellow或light_blue。
+  color_topic: /vision_color
+  # 所有三维坐标均位于D435i彩色相机光学坐标系。
+  camera_frame_id: camera_color_optical_frame
+  qos_depth: 10
+  initial_mode: 0
+  modes:
+    idle: 0
+    surface_tracking: 1
+    ring_detection: 2
+  result:
+    enabled: false
+    topic: /vision/result
+    qos_depth: 10
+  status:
+    topic: /vision/status
+    qos_depth: 1
+  service:
+    name: /vision/get_status
+
+ring_calibration:
+  target_distance_m: 0.30
+  distance_tolerance_m: 0.01
+  middle_center_tolerance_px: 10.0
+  max_x_axis_angle_deg: 3.0
+
+ring:
+  dp: 1.5
+  min_distance: 50.0
+  param1: 100.0
+  param2: 0.95
+  min_radius: 15
+  max_radius: 100
+  collinearity_tolerance_px: 5.0
+  # 同时运行Hough圆和轮廓椭圆；Hough圆只用于可选筛选，不对外输出。
+  ellipse_enabled: true
+  ellipse_min_contour_points: 20
+  # 短轴/长轴最小比例；越小越允许更大的斜视角度。
+  ellipse_min_axis_ratio: 0.35
+  # 轮廓点相对拟合椭圆的最大平均归一化误差。
+  ellipse_max_fit_error: 0.20
+  # 开启下方Hough邻近筛选时允许的最大三维距离。
+  ellipse_max_center_distance_cm: 2.0
+  # false：椭圆独立输出，不要求附近存在Hough圆。
+  ellipse_require_hough_proximity: true
+  # Hough输入保留模糊；椭圆轮廓在此灰度处重新二值化。
+  ellipse_binary_threshold: 127
+  # 沿拟合椭圆周长均匀采样，用梯度边缘验证完整度；范围8~4096。
+  ellipse_edge_sample_count: 72
+  ellipse_edge_search_radius_px: 3
+  # 虚线色环允许间断，但至少一半周长附近应存在边缘。
+  ellipse_min_edge_support: 0.50
+  # 把一周分成24个等弧长区间，至少14个区间必须有边缘支持。
+  ellipse_coverage_bin_count: 24
+  ellipse_min_covered_bins: 14
+  # 利用对齐深度和相机内参计算的实体长轴范围（包含边界）。
+  ellipse_min_major_axis_cm: 5.0
+  ellipse_max_major_axis_cm: 11.0
+  # 对Hough圆进行跨帧跟踪，抑制单帧漏检和圆心、半径抖动。
+  tracking_enabled: true
+  # 新测量在平滑结果中的权重；越大响应越快，越小画面越稳定。
+  tracking_smoothing: 0.45
+  # 当前检测与已有轨迹圆心的最大匹配距离。
+  tracking_max_match_distance_px: 40.0
+  # 连续漏检超过该帧数后才删除轨迹。
+  tracking_max_missing_frames: 5

@@ -1,0 +1,10 @@
+std_msgs/Header header
+uint64 frame_sequence
+uint8 current_mode
+string current_mode_name
+string selected_color
+bool camera_ok
+bool result_available
+float64 processing_fps
+cv3_interfaces/SurfaceTrackingResult surface
+cv3_interfaces/RingCalibrationResult ring

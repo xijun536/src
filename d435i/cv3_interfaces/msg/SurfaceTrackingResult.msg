@@ -1,0 +1,17 @@
+bool active
+bool tracking_valid
+bool measured
+string color
+float64 center_u_px
+float64 center_v_px
+float64 velocity_u_px_s
+float64 velocity_v_px_s
+float64 speed_px_s
+float64 radius_px
+uint32 missing_frames
+bool depth_applied
+bool surface_3d_valid
+geometry_msgs/Point surface_center_camera_m
+geometry_msgs/Vector3 surface_normal_camera
+float64 surface_inlier_ratio
+float64 normal_to_gravity_deg

@@ -1,0 +1,9 @@
+uint8 order
+float64 center_u_px
+float64 center_v_px
+bool position_3d_valid
+geometry_msgs/Point position_camera_m
+float64 major_axis_px
+float64 minor_axis_px
+float64 ellipse_angle_deg
+float64 fit_error
