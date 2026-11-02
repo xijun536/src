@@ -1,1 +1,63 @@
 .worktrees/
+
+# ROS / colcon / catkin build outputs
+build/
+install/
+log/
+devel/
+.catkin_tools/
+.colcon/
+.ros/
+
+# CMake generated files and compilation databases
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+compile_commands.json
+
+# C/C++ compilation outputs
+*.o
+*.obj
+*.a
+*.so
+*.so.*
+*.out
+
+# Python caches, package metadata and virtual environments
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.venv/
+venv/
+
+# ROS recordings and runtime logs
+*.bag
+*.bag.active
+*.db3
+*.db3-shm
+*.db3-wal
+*.mcap
+*.log
+
+# Local editor files (keep shared VS Code settings)
+.idea/
+.vscode/ipch/
+.vscode/.browse.VC.db*
+*.swp
+*.swo
+*~
+
+# OS metadata and local environment files
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+!.env.sample
