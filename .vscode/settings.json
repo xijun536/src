@@ -1,12 +1,15 @@
 {
     "ros.distro": "humble",
     "python.autoComplete.extraPaths": [
-        "/opt/ros/humble/lib/python3.10/site-packages",
-        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+        "/home/nuc/miniconda3/envs/d435i/lib/python3.11/site-packages",
+        "/home/nuc/Desktop/src/d435i/install/cv3_interfaces/lib/python3.11/site-packages"
     ],
     "python.analysis.extraPaths": [
-        "/opt/ros/humble/lib/python3.10/site-packages",
-        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+        "/home/nuc/miniconda3/envs/d435i/lib/python3.11/site-packages",
+        "/home/nuc/Desktop/src/d435i/install/cv3_interfaces/lib/python3.11/site-packages"
     ],
-    "cmake.sourceDirectory": "/home/book/Desktop/src/bringup"
+    "cmake.sourceDirectory": "${workspaceFolder}/bringup",
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
+    "python-envs.defaultPackageManager": "ms-python.python:conda",
+    "python.defaultInterpreterPath": "/home/nuc/miniconda3/envs/d435i/bin/python"
 }
