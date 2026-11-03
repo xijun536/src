@@ -108,3 +108,11 @@ def _has_enough_edge(distance: np.ndarray, x: float, y: float,
     supported[inside] = distance[rows[inside], columns[inside]] <= 3
     covered_bins = np.unique((np.arange(72) * 24 // 72)[supported]).size
     return bool(np.mean(supported) >= 0.5 and covered_bins >= 14)
+
+
+if __name__ == "__main__":
+    if __package__:
+        from .camera_preview import main
+    else:
+        from camera_preview import main
+    main(default_mode="rings")

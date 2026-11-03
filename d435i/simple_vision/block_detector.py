@@ -64,3 +64,11 @@ def detect_blocks(image: np.ndarray, color: str = "green", min_area: float = 150
             "circularity": float(circularity),
         })
     return sorted(blocks, key=lambda block: block["area_px2"], reverse=True)
+
+
+if __name__ == "__main__":
+    if __package__:
+        from .camera_preview import main
+    else:
+        from camera_preview import main
+    main(default_mode="blocks")
