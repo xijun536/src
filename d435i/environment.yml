@@ -1,0 +1,22 @@
+name: d435i
+channels:
+  - conda-forge
+  - robostack-humble
+  - nodefaults
+dependencies:
+  - python=3.11
+  - ros-humble-ros-base
+  - colcon-common-extensions
+  - cmake
+  - ninja
+  - compilers
+  - opencv=*=qt*
+  - numpy<2
+  - pyyaml
+  - empy=3.3.4
+  - setuptools<80
+  - pytest<9
+  - pip
+  - pip:
+      - colcon-notification
+      - pyrealsense2==2.59.1.11053

@@ -61,3 +61,6 @@ Thumbs.db
 .env.*
 !.env.example
 !.env.sample
+
+# Local editor configuration backups
+.vscode/*.bak
